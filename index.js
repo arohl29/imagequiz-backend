@@ -61,7 +61,7 @@ application.get('/scores/:quiztaker/:quizname', (request, response) => {
   console.log("reach");
   if(result.valid){
     console.log(result.score);
-    response.status(200).json({done: true, result: result.score, message: "scores found"})
+    response.status(200).json({done: true, result: result.player.score, message: "scores found"})
   } else {
     response.status(404).json({done: false,message: "scores not found"})
   }
