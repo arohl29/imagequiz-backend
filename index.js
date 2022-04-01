@@ -21,8 +21,8 @@ application.post('/register', (request,response) =>{
 application.post('/login', (request,response) => {
   let name = request.body.name;
   let email = request.body.email;
-  let responseult = store.login(email,password);
-  if(responseult.valid){
+  let result = store.login(email,password);
+  if(result.valid){
     response.status(200).json({done: true, message: "Customer logged in"})
   } else {
     response.status(401).json({done: false, message: result.message})
@@ -31,8 +31,8 @@ application.post('/login', (request,response) => {
 
 application.get('/quiz/:id', (request, response) => {
   let id = request.params.id;
-  let responseult = store.getQuiz(id);
-  if(responseult.done){
+  let result = store.getQuiz(id);
+  if(result.done){
     response.status(200).json({done: true, result: result.quiz})
   } else {
     response.status(404).json({done: false, message: result.message})
