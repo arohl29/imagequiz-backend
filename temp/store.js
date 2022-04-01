@@ -10,7 +10,7 @@ let store = {
   login: (email,password) => {
     let customers = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
     if(customers) {
-      let valid = bcrypt.compareSync(password, customers.password);
+      let valid = password, customers.password;
       if(valid){
         return{valid: true};
       } else {

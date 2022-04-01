@@ -1,5 +1,6 @@
 const express = require("express");
 const {store} = require("./temp/store");
+const {flowers} = require("./temp/flowers");
 const cors = require('cors');
 
 const application = express();
@@ -39,6 +40,10 @@ application.get('/quiz/:id', (request, response) => {
   } else {
     response.status(404).json({done: false, message: result.message})
   }
+});
+
+application.get('/flowers', (request, response) => {
+  response.status(200).json({done: true, result: flowers, message: "Done"})
 })
 
 
