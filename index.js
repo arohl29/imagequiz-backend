@@ -46,7 +46,7 @@ application.get('/flowers', (request, response) => {
   response.status(200).json({done: true, result: flowers, message: "Done"})
 });
 
-application.post('/score', (request, response) => {
+application.post('/scores', (request, response) => {
   let name = request.body.quizTaker;
   let quiz = request.body.quizName;
   let score = request.body.score;
