@@ -50,7 +50,7 @@ application.post('/score', (request, response) => {
   let name = request.body.quizTaker;
   let quiz = request.body.quizName;
   let score = request.body.score;
-  store.addScore(name,quiz,score);
+  store.addScores(name,quiz,score);
   respond.status(200).json({done: true, message: "Score added"});
 });
 
