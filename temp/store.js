@@ -32,7 +32,7 @@ let store = {
   },
 
   addScores: (quizTaker, quizName, score) => {
-    scores.push({quizTaker: quizTaker, quizName: quizName, score: {score}});
+    scores.push({quizTaker: quizTaker, quizName: quizName, score: score);
   },
 
   getScore: (quiztaker, quizname) => {
