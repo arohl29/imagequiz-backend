@@ -1,5 +1,5 @@
-const expresponses = require("express");
-const {store} = require('/store');
+const express = require("express");
+const {store} = require("store");
 
 const application = express();
 const port = process.env.PORT || 4002;
