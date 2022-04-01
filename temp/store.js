@@ -41,8 +41,7 @@ let store = {
       let valid = quizname.toLowerCase() === player.quizName.toLowerCase();
       console.log(valid);
       if(valid){
-        playerScores = player.score;
-        return{valid: true, playerScores};
+        return{valid: true, player};
       } else {
         return{valid: false, message: 'quizname invalid'};
       }
