@@ -33,7 +33,6 @@ application.post('/login', (request,response) => {
 });
 
 application.get('/flowers', (request, response) => {
-  let flowers = request.name.flowers;
   response.status(200).json({done: true, result: flowers, message: "Done"})
 });
 
