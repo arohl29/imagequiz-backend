@@ -18,7 +18,7 @@ application.post('/register', (request,response) =>{
   response.status(200).json({done: true, message: "Customer added"})
 });
 
-application.post('/login', (request,response) => {
+application.get('/login', (request,response) => {
   let name = request.body.name;
   let email = request.body.email;
   let result = store.login(email,password);
@@ -39,6 +39,9 @@ application.get('/quiz/:id', (request, response) => {
   }
 })
 
+
+application.all('*', (request, response) => response.redirect('/'))
+
 application.listen(port, () => {
-  console.log('Listening to the port ${port}');
+  console.log('Listening to the port');
 })
