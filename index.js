@@ -10,7 +10,7 @@ application.get('/', (request, response) => {
   response.status(200).json({done: true, message: 'Fine!'});
 });
 
-application.post('/register', (request,response) =>{
+application.get('/register', (request,response) =>{
   let name = request.body.name;
   let email = request.body.email;
   let password = request.body.password;
@@ -18,7 +18,7 @@ application.post('/register', (request,response) =>{
   response.status(200).json({done: true, message: "Customer added"})
 });
 
-application.get('/login', (request,response) => {
+application.post('/login', (request,response) => {
   let name = request.body.name;
   let email = request.body.email;
   let result = store.login(email,password);
