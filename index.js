@@ -1,10 +1,12 @@
 const express = require("express");
 const {store} = require("./temp/store");
+const cors = require('cors');
 
 const application = express();
 const port = process.env.PORT || 4002;
 
 application.use(express.json());
+application.use(cors());
 
 application.get('/', (request, response) => {
   response.status(200).json({done: true, message: 'Fine!'});
