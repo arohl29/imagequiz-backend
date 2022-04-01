@@ -58,7 +58,9 @@ application.get('/scores/:quiztaker/:quizname', (request, response) => {
   let name = request.params.quiztaker;
   let quiz = request.params.quizname;
   let result = store.getScore(name,quiz);
+  console.log("reach");
   if(result.valid){
+    console.log(result.score);
     response.status(200).json({done: true, result: result.score, message: "scores found"})
   } else {
     response.status(404).json({done: false,message: "scores not found"})
