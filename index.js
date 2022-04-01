@@ -1,5 +1,5 @@
 const express = require("express");
-const {store} = require("store");
+const {store} = require("./temp/store");
 
 const application = express();
 const port = process.env.PORT || 4002;

@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-let { customers } = require('/customers');
-let { quizzes } = require('/data');
+let { customers } = require('./temp/customers');
+let { quizzes } = require('./temp/data');
 
 let store = {
   addCustomer: (name, email, password) => {
