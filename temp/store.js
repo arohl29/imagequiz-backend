@@ -10,7 +10,7 @@ let store = {
   login: (email,password) => {
     let customer = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
     if(customer) {
-      let valid = password, customer.password;
+      let valid = password === customer.password;
       if(valid){
         return{valid: true};
       } else {
