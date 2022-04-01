@@ -8,9 +8,9 @@ let store = {
   },
 
   login: (email,password) => {
-    let customers = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
-    if(customers) {
-      let valid = password, customers.password;
+    let customer = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
+    if(customer) {
+      let valid = password, customer.password;
       if(valid){
         return{valid: true};
       } else {
