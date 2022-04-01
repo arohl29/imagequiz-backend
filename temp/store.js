@@ -32,7 +32,7 @@ let store = {
   },
 
   addScores: (quizTaker, quizName, score) => {
-    scores.push({quizTaker: quizTaker, quizName: quizName, score: score});
+    scores.push({quizTaker: quizTaker, quizName: quizName, score: {score}});
   },
 
   getScore: (quiztaker, quizname) => {
@@ -41,6 +41,7 @@ let store = {
       let valid = quizname.toLowerCase() === player.quizName.toLowerCase();
       console.log(valid);
       if(valid){
+        console.log(player.score);
         return{valid: true, player};
       } else {
         return{valid: false, message: 'quizname invalid'};
