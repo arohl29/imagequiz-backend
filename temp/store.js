@@ -39,6 +39,7 @@ let store = {
     let player = scores.find(x => x.quizTaker.toLowerCase() === quiztaker.toLowerCase());
     if(player) {
       let valid = quizname.toLowerCase() === player.quizName.toLowerCase();
+      console.log(valid);
       if(valid){
         playerScores = player.score;
         return{valid: true, playerScores};
