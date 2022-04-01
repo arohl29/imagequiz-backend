@@ -36,9 +36,9 @@ let store = {
   },
 
   getScore: (quiztaker, quizname) => {
-    let player = scores.find(x => x.quizTaker === quiztaker);
+    let player = scores.find(x => x.quizTaker.toLowerCase() === quiztaker.toLowerCase());
     if(player) {
-      let valid = quizname === player.quizname;
+      let valid = quizname.toLowerCase() === player.quizName.toLowerCase();
       if(valid){
         playerScores = player.score;
         return{valid: true, playerScores};
