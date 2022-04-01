@@ -1,41 +1,41 @@
-const express = require("express");
-const {store} = require('/store');
+const expresponses = requestuire("expresponses");
+const {store} = requestuire('/store');
 
-const application = express();
+const application = expresponses();
 const port = 4002;
 
-application.use(express.json());
+application.use(expresponses.json());
 
-application.get('/', (req, res) => {
-  res.status(200).json({done: true, message: 'Fine!'});
+application.get('/', (request, response) => {
+  response.status(200).json({done: true, message: 'Fine!'});
 });
 
-application.post('/register', (req,res) =>{
-  let name = req.body.name;
-  let email = req.body.email;
-  let password = req.body.password;
+application.post('/register', (request,response) =>{
+  let name = request.body.name;
+  let email = request.body.email;
+  let password = request.body.password;
   store.addCustomer(name, email,password);
-  res.status(200).json({done: true, message: "Customer added"})
+  response.status(200).json({done: true, message: "Customer added"})
 });
 
-application.post('/login', (req,res) => {
-  let name = req.body.name;
-  let email = req.body.email;
-  let result = store.login(email,password);
-  if(result.valid){
-    res.status(200).json({done: true, message: "Customer logged in"})
+application.post('/login', (request,response) => {
+  let name = request.body.name;
+  let email = request.body.email;
+  let responseult = store.login(email,password);
+  if(responseult.valid){
+    response.status(200).json({done: true, message: "Customer logged in"})
   } else {
-    res.status(401).json({done: false, message: result.message})
+    response.status(401).json({done: false, message: responseult.message})
   }
 });
 
-application.get('/quiz/:id', (req, res) => {
-  let id = req.params.id;
-  let result = store.getQuiz(id);
-  if(result.done){
-    res.status(200).json({done: true, result: result.quiz})
+application.get('/quiz/:id', (request, response) => {
+  let id = request.params.id;
+  let responseult = store.getQuiz(id);
+  if(responseult.done){
+    response.status(200).json({done: true, responseult: responseult.quiz})
   } else {
-    res.status(404).json({done: false, message: result.message})
+    response.status(404).json({done: false, message: responseult.message})
   }
 })
 
