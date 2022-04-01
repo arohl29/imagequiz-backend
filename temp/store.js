@@ -4,14 +4,13 @@ let { quizzes } = require('../temp/data.js');
 
 let store = {
   addCustomer: (name, email, password) => {
-    const hash = bcrypt.hashSync(password, 10);
-    customer.push({id: 1,name: name, email: email, password: hash});
+    customers.push({id: 1,name: name, email: email, password: password});
   },
 
   login: (email,password) => {
-    let customer = customer.find(x => x.email.toLowerCase() === email.toLowerCase());
-    if(customer) {
-      let valid = bcrypt.compareSync(password, customer.password);
+    let customers = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
+    if(customers) {
+      let valid = bcrypt.compareSync(password, customers.password);
       if(valid){
         return{valid: true};
       } else {

@@ -14,7 +14,7 @@ application.get('/register', (request,response) =>{
   let name = request.body.name;
   let email = request.body.email;
   let password = request.body.password;
-  store.addCustomer(name, email,password);
+  store.addCustomer(name,email,password);
   response.status(200).json({done: true, message: "Customer added"})
 });
 
