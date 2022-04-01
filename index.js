@@ -51,7 +51,7 @@ application.post('/score', (request, response) => {
   let quiz = request.body.quizName;
   let score = request.body.score;
   store.addScores(name,quiz,score);
-  respond.status(200).json({done: true, message: "Score added"});
+  response.status(200).json({done: true, message: "Score added"});
 });
 
 application.get('/scores/:quiztaker/:quizname', (request, response) => {

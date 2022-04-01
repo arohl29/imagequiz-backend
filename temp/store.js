@@ -15,7 +15,7 @@ let store = {
       if(valid){
         return{valid: true};
       } else {
-        return{valid: false, message: 'Credemtials invalid'};
+        return{valid: false, message: 'Credentials invalid'};
       }
     } else {
       return{valid: false, message: 'Email invalid'}
