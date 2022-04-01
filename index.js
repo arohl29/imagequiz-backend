@@ -21,7 +21,7 @@ application.get('/register', (request,response) =>{
 });
 
 application.post('/login', (request,response) => {
-  let name = request.body.name;
+  let password = request.body.password;
   let email = request.body.email;
   let result = store.login(email,password);
   if(result.valid){
