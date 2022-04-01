@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 let { customers } = require('../temp/customers.js');
 let { quizzes } = require('../temp/data.js');
+let { scores } = require('../temp/scores.js');
 
 let store = {
   addCustomer: (name, email, password) => {
@@ -27,6 +28,25 @@ let store = {
       return {done:true, quiz};
     } else {
       return{done:false, message: 'Quiz not found'};
+    }
+  },
+
+  addScores: (quizTaker, quizName, score) => {
+    scores.push({quizTaker: email, quizName: quizId, score: {score}});
+  },
+
+  getScore: (quiztaker, quizname) => {
+    let player = scores.find(x => x.quizTaker === quiztaker);
+    if(player) {
+      let valid = quizname === player.quizname;
+      if(valid){
+        playerScores = player.score;
+        return{valid: true, playerScores};
+      } else {
+        return{valid: false, message: 'quizname invalid'};
+      }
+    } else {
+      return{valid: false, message: 'quiztaker invalid'}
     }
   }
 }
