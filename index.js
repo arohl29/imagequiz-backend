@@ -32,6 +32,11 @@ application.post('/login', (request,response) => {
   }
 });
 
+application.get('/flowers', (request, response) => {
+  let flowers = request.name.flowers;
+  response.status(200).json({done: true, result: flowers, message: "Done"})
+});
+
 application.get('/quiz/:id', (request, response) => {
   let id = request.params.id;
   let result = store.getQuiz(id);
@@ -42,9 +47,6 @@ application.get('/quiz/:id', (request, response) => {
   }
 });
 
-application.get('/flowers', (request, response) => {
-  response.status(200).json({done: true, result: flowers, message: "Done"})
-});
 
 application.post('/score', (request, response) => {
   let name = request.body.quizTaker;
@@ -61,13 +63,14 @@ application.get('/scores/:quiztaker/:quizname', (request, response) => {
   if(result.valid){
     response.status(200).json({done: true, result: result.player.score, message: "scores found"})
   } else {
-    response.status(404).json({done: false,message: "scores not found"})
+    response.status(404).json({done: false,message: "undefined"})
   }
 });
+
 
 
 application.all('*', (request, response) => response.redirect('/'))
 
 application.listen(port, () => {
-  console.log('Listening to the port');
+  console.log(`Listening to the port ${port} `);
 })
