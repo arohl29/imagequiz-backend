@@ -34,9 +34,9 @@ application.post('/login', (request,response) => {
   store.login(email,password)
   .then(x => {
     if(x.valid){
-        response.status(200).json({ done: true, message: 'customer logged in'});
+        response.status(200).json({ done: true, message: 'customer logged in'})
     } else {
-      response.status(401).json({done: false, message: 'Something went wrong'});
+      response.status(401).json({done: false, message: 'Something went wrong'})
     }
   })
   .catch(e => {
