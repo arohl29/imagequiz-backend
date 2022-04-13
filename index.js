@@ -31,12 +31,12 @@ application.get('/register', (request,response) =>{
 application.post('/login', (request,response) => {
   let password = request.body.password;
   let email = request.body.email;
-  let result = store.login(email,password).then(x => {
-    .then(x=> response.status(200).json({ done: true, message: 'customer logged in'}))
-    .catch(e => {
-      console.log(e);
-      response.status(500).json({done: false, message: "Customer not logged in"})
-    });
+  let result = store.login(email,password)
+  .then(x=> response.status(200).json({ done: true, message: 'customer logged in'}))
+  .catch(e => {
+    console.log(e);
+    response.status(500).json({done: false, message: "Customer not logged in"})
+  });
 });
 
 application.get('/quiz/:id', (request, response) => {
