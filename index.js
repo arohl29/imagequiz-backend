@@ -20,11 +20,6 @@ application.get('/register', (request,response) =>{
   let email = request.body.email;
   let password = request.body.password;
   store.addCustomer(name,email,password)
-  .then(x=> response.status(200).json({ done: true, message: 'customer added'}))
-  .catch(e => {
-    console.log(e);
-    response.status(500).json({done: false, message: "Customer not added"})
-  });
   response.status(200).json({ done: true, message: 'customer added'})
 });
 
