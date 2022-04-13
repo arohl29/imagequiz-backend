@@ -31,15 +31,13 @@ application.get('/register', (request,response) =>{
 application.post('/login', (request,response) => {
   let password = request.body.password;
   let email = request.body.email;
-  let result = store.login(email,password)
-  .then(x => {
+  let result = store.login(email,password).then(x => {
     if(x.valid){
         response.status(200).json({ done: true, message: 'customer logged in'});
     } else {
       response.status(401).json({done: false, message: 'Something went wrong'});
     }
-  })
-  .catch(e => {
+  }).catch(e => {
     console.log(e);
     response.status(500).json({done: false, message: "Customer not added"})
   });
