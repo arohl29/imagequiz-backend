@@ -7,8 +7,7 @@ const {Pool} = require('pg');
 
 const connectionString = 'postgres://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}';
 const connection = {
-  connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL : connectionString,
-  ssl: true
+  connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL : connectionString
 }
 const pool = new Pool(connection);
 
