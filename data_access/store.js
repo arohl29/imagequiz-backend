@@ -10,7 +10,7 @@ const connection = {
   connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL : connectionString,
   ssl: true
 }
-const pool = new Pool{connection};
+const pool = new Pool(connection);
 
 let store = {
   addCustomer: (name, email, password) => {
