@@ -21,22 +21,28 @@ application.get('/register', (request,response) =>{
   let password = request.body.password;
   store.addCustomer(name,email,password)
   .then(x=> response.status(200).json({ done: true, message: 'customer added'}))
-  .catch(e =? {
+  .catch(e => {
     console.log(e);
-    response.status(200).json({ done: true, message: 'customer added'})
+    response.status(500).json({done: false, message: "Customer not added"})
   });
-  response.status(500).json({done: false, message: "Customer not added"})
+  response.status(200).json({ done: true, message: 'customer added'})
 });
 
 application.post('/login', (request,response) => {
   let password = request.body.password;
   let email = request.body.email;
-  let result = store.login(email,password);
-  if(result.valid){
-    response.status(200).json({done: true, message: "Customer logged in"})
-  } else {
-    response.status(401).json({done: false, message: result.message})
-  }
+  let result = store.login(email,password)
+  .then(x => {
+    if(x.valid){
+        response.status(200).json({ done: true, message: 'customer logged in'});
+    } else {
+      response.status(401).json({done: false, message: 'Something went wrong'});
+    }
+  })
+  .catch(e => {
+    console.log(e);
+    response.status(500).json({done: false, message: "Customer not added"})
+  });
 });
 
 application.get('/quiz/:id', (request, response) => {
