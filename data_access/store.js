@@ -14,8 +14,8 @@ const pool = new Pool{connection};
 
 let store = {
   addCustomer: (name, email, password) => {
-    return pool.query('insert into imagequiz.customer (name, email, password) values ($1, $2, $3)' [name,email,password]);
-    //customers.push({id: 1,name: name, email: email, password: password});
+    pool.query('insert into imagequiz.customer (name, email, password) values ($1, $2, $3)' [name,email,password]);
+    customers.push({id: 1,name: name, email: email, password: password});
   },
 
   login: (email,password) => {
