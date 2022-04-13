@@ -2,6 +2,8 @@ const express = require("express");
 const {store} = require("./temp/store");
 const {flowers} = require("./temp/flowers");
 const cors = require('cors');
+const {store} = require("./data_access/store");
+require('dotenv').config();
 
 const application = express();
 const port = process.env.PORT || 4002;
@@ -17,8 +19,13 @@ application.get('/register', (request,response) =>{
   let name = request.body.name;
   let email = request.body.email;
   let password = request.body.password;
-  store.addCustomer(name,email,password);
-  response.status(200).json({done: true, message: "Customer added"})
+  store.addCustomer(name,email,password)
+  .then(x=> response.status(200).json({ done: true, message: 'customer added'}))
+  .catch(e =? {
+    console.log(e);
+    response.status(200).json({ done: true, message: 'customer added'})
+  });
+  response.status(500).json({done: false, message: "Customer not added"})
 });
 
 application.post('/login', (request,response) => {

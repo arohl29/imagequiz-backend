@@ -3,9 +3,19 @@ let { customers } = require('../temp/customers.js');
 let { quizzes } = require('../temp/data.js');
 let { scores } = require('../temp/scores.js');
 
+const {Pool} = require('pg');
+
+const connectionString = 'postgres://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}';
+const connection = {
+  connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL : connectionString,
+  ssl {rejectUnauthorized: false};
+}
+const pool = new Pool{connection};
+
 let store = {
   addCustomer: (name, email, password) => {
-    customers.push({id: 1,name: name, email: email, password: password});
+    return pool.query('insert into imagequiz.customer (name, email, password) values ($1, $2, $3)' [name,email,password]);
+    //customers.push({id: 1,name: name, email: email, password: password});
   },
 
   login: (email,password) => {
