@@ -19,6 +19,7 @@ let store = {
   },
 
   login: (email,password) => {
+    pool.query('select name, email, password from imagequiz.customer wjere email = $1',[email]);
     let customer = customers.find(x => x.email.toLowerCase() === email.toLowerCase());
     if(customer) {
       let valid = password === customer.password;
