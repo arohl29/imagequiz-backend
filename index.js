@@ -37,7 +37,7 @@ application.post('/login', (request,response) => {
     console.log(e);
     response.status(500).json({done: false, message: "Customer not logged in"})
   });
-  response.status(200).json({ done: true, message: 'customer logged in'}))
+  response.status(200).json({ done: true, message: 'customer logged in'})
 });
 
 application.get('/quiz/:id', (request, response) => {
