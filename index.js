@@ -6,63 +6,55 @@ const {store} = require("./data_access/store");
 require('dotenv').config();
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
-var GoogleStrategy = require('passport-google-oidc');
-
+const Googlestrategy = require("passport-google-oauth2").Strategy;
 const application = express();
 const port = process.env.PORT || 4002;
+let backendURL = "http://localhost:4002";
+let frontendURL = "http://localhost:3000";
 
 application.use(express.json());
-application.use(cors());
+application.use(cors({
+  origin: frontendURL,
+  credentials: true
+}));
 
 application.get('/', (request, response) => {
   response.status(200).json({done: true, message: 'Fine!'});
 });
 
-passport.use(new GoogleStrategy({
-    clientID: process.env['878154857984-f700tdukle79k71modlpunnrfv22c7al.apps.googleusercontent.com'],
-    clientSecret: process.env['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'],
-    callbackURL: 'https://www.example.com/oauth2/redirect/google'
-  },
-  function(issuer, profile, cb) {
-    db.get('SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?', [
-      issuer,
-      profile.id
-    ], function(err, cred) {
-      if (err) { return cb(err); }
-      if (!cred) {
-        // The Google account has not logged in to this app before.  Create a
-        // new user record and link it to the Google account.
-        db.run('INSERT INTO users (name) VALUES (?)', [
-          profile.displayName
-        ], function(err) {
-          if (err) { return cb(err); }
-
-          var id = this.lastID;
-          db.run('INSERT INTO federated_credentials (user_id, provider, subject) VALUES (?, ?, ?)', [
-            id,
-            issuer,
-            profile.id
-          ], function(err) {
-            if (err) { return cb(err); }
-            var user = {
-              id: id.toString(),
-              name: profile.displayName
-            };
-            return cb(null, user);
-          });
-        });
+passport.use(
+  new LocalStrategy({usernameField: 'email' }, function verify(username, password, cb) {
+    store.login(username, password)
+    .then(x => {
+      if (x.valid) {
+        return cb(null, x.user);
       } else {
-        // The Google account has previously logged in to the app.  Get the
-        // user record linked to the Google account and log the user in.
-        db.get('SELECT * FROM users WHERE id = ?', [ cred.user_id ], function(err, user) {
-          if (err) { return cb(err); }
-          if (!user) { return cb(null, false); }
-          return cb(null, user);
-        });
+        return cb(null, false, { message: 'Incorrect username or password.' });
       }
-    };
-  }
-));
+    })
+    .catch(e => {
+      console.log(e);
+      cb('Something went wrong!');
+    });
+
+  }));
+
+  passport.use(new Googlestrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: `${backendURL}/auth/google/callback`,
+    passReqToCallback: true
+  },
+  function (request, accessToken, refreshToken, profile, done) {
+    console.log('in Google strategy:');
+    //console.log(profile);
+    store.findOrCreateNonLocalCustomer(profile.displayName, profile.email, profile.id, profile.provider)
+    .then(x => done(null,x))
+    .catch(e => {
+      console.log(e);
+      return done('Something went wrong.');
+    });
+  }));
 
 application.get('/register', (request,response) =>{
   let name = request.body.name;
@@ -79,9 +71,30 @@ application.post('/login', (request,response) => {
   response.status(200).json({ done: true, message: 'customer logged in'})
 });
 
-application.get('/flowers', (request, response) => {
-  response.status(200).json({done: true, result: flowers, message: "Done"})
+application.get('/auth/google',
+passport.authenticate('google', {
+  scope:
+  ['email', 'profile']
+}
+));
+
+application.get('/auth/googe/callback',
+passport.authenticate('google', {
+  successRedirect: '/auth/google/success',
+  failureRedirect: '/auth/google/failure'
+}));
+
+application.get('/auth/google/success', (request,response) => {
+  console.log('/auth/google/success');
+  console.log(request.user);
+  response.redirect(`${frontend}/#/google/${request.user.username}/${request.user.name}`);
 });
+
+application.get('/auth/google/failure', (request,response) => {
+  console.log('/auth/google/failure');
+  response.redirect(`${frontend}/#/google/failed`);
+});
+
 
 application.get('/quiz/:id', (request, response) => {
   let id = request.params.id;
@@ -93,6 +106,9 @@ application.get('/quiz/:id', (request, response) => {
   }
 });
 
+application.get('/flowers', (request, response) => {
+  response.status(200).json({done: true, result: flowers, message: "Done"})
+});
 
 application.post('/score', (request, response) => {
   let name = request.body.quizTaker;
@@ -109,14 +125,13 @@ application.get('/scores/:quiztaker/:quizname', (request, response) => {
   if(result.valid){
     response.status(200).json({done: true, result: result.player.score, message: "scores found"})
   } else {
-    response.status(404).json({done: false,message: "undefined"})
+    response.status(404).json({done: false,message: "scores not found"})
   }
 });
-
 
 
 application.all('*', (request, response) => response.redirect('/'))
 
 application.listen(port, () => {
-  console.log(`Listening to the port ${port} `);
+  console.log('Listening to the port');
 })

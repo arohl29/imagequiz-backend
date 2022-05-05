@@ -15,8 +15,31 @@ const pool = new Pool(connection);
 let store = {
   addCustomer: (name, email, password) => {
     pool.query('insert into imagequiz.customer (name, email, password) values ($1, $2, $3)' [name,email,password]);
-    customers.push({id: 1,name: name, email: email, password: password});
+    //customers.push({id: 1,name: name, email: email, password: password});
   },
+  findNonLocalCustomer: (email, provider) => {
+    return pool.query('select * from imagequiz.customer where local = $1 and email = $2 and provider = $3', ['f', email, provider])
+    .then(x => {
+      if(x.rows.length == 1) {
+        return { found: true, user: {id: x.rows[0].id, username: x.rows[0].email, name: x.rows[0].name} };
+      } else {
+        return {found: false};
+      }
+    })
+  },
+  findOrCreateNonLocalCustomer: async (name, email, password, provider) => {
+    console.log('in findOrCreateNonLocalCustomer');
+    console.log(name,email,password,provider);
+    search = await store.findNonLocalCustomer(email, provider);
+    if(search.found) {
+      return search.user;
+    }
+    return pool.query('insert into imagequiz.customer (name, email, password,local, provider) values ($1, $2, $3, $4, $5)', [name, email, password, local, provider])
+    .then(x => {
+      return { done: true, user: {id: name, username: email, name: name} };
+    });
+  },
+
 
   login: (email,password) => {
     pool.query('select name, email, password from imagequiz.customer where email = $1',[email]);
